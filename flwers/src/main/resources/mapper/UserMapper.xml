@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="org.example.pojo.User">
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="age" column="gender" jdbcType="INTEGER"/>
+        <result property="gender" column="age" jdbcType="VARCHAR"/>
+        <result property="phoneNum" column="phone_num" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        username,password,name,gender,age,phone_num,email,avatar,is_deleted
+    </sql>
+    <select id="selectAllUser" resultType="map">
+        select username,name,gender,age,phone_num,email from user where is_deleted = 0
+        <if test="portalVo.keyWords !=null and portalVo.keyWords.length()>0 ">
+            and name like concat('%',#{portalVo.keyWords},'%')
+        </if>
+    </select>
+</mapper>
