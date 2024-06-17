@@ -10,6 +10,7 @@ import org.example.pojo.vo.FVo;
 import org.example.pojo.vo.PortalVo;
 import org.example.pojo.vo.UserVo;
 import org.example.service.*;
+import org.example.utils.RedisCache;
 import org.example.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,11 +30,24 @@ private     FFloowersService flservice;
 private OrderFloowersService orderFloowersService;
 @Autowired
 private OrderBackService backService;
+
+@Autowired
+private RedisCache  redisUtil;
     @CrossOrigin(origins = "http://localhost:8080")
     @PostMapping("/user/login")
     public Result<?> login(@RequestBody UserVo user, HttpSession session) {
         System.out.println(user.getUsername());
         System.out.println(user.getPassword());
+        // 获取redis中的验证码
+
+        String redisCode = redisUtil.getCacheObject(user.getKey());
+        if(redisCode == null){
+            return Result.error("请生成一个验证码");
+        }
+        // 判断验证
+        if (user.getVercode() == null | !redisCode.equals(user.getVercode().trim().toLowerCase())) {
+            return Result.error("验证码不正确");
+        }
         User o = userservice.Userlogin(user.getUsername(), user.getPassword());
         if (o != null) {
             if(o.getIdentify() != 0) return Result.error("这可能是管理员账号");

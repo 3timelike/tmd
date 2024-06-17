@@ -9,4 +9,6 @@ public class UserVo {
     private String name;
     private String identity;
     private String avatar;
+    private String key;
+    private String vercode;
 }

@@ -1,5 +1,6 @@
 import request from "@/utils/index";
 
+
 const {ElMessage} = require("element-plus");
 export default {
     name: "login",
@@ -10,20 +11,22 @@ export default {
                 username: "",
                 password: "",
                 identity: "",
+                vercode:"",
+                key:"",
             },
+            codeimage:"",
             rules: {
-                username: [
-                    {required: true, message: "请输入账号", trigger: "blur"},
-                ],
+                username: [{required: true, message: "请输入账号", trigger: "blur"},],
                 password: [{required: true, message: "请输入密码", trigger: "blur"}],
                 identity: [{required: true, message: "请选择身份", trigger: "blur"}],
+                vercode: [{required: true, message: "请输入验证码", trigger: "blur"}],
             },
         };
     },
     computed: {
         disabled() {
-            const {username, password, identity} = this.form;
-            return Boolean(username && password && identity);
+            const {username, password, identity,vercode} = this.form;
+            return Boolean(username && password && identity && vercode);
         },
     },
     methods: {
@@ -69,6 +72,27 @@ export default {
         },
         regist(){
             this.$router.push("/regist")
+        },
+        getcode(){
+            request.get("/captcha").then((res) => {
+                if (res.code === 200) {
+                    console.log("chengg")
+                    ElMessage({
+                        message: "获取验证码成功",
+                        type: "success",
+                    });
+                    //console.log(res.data)
+                    this.form.key = res.data.key
+                    this.codeimage = res.data.image
+                } else {
+                    console.log("fail")
+                    console.log(res.message)
+                    ElMessage({
+                        message: res.message,
+                        type: "error",
+                    });
+                }
+            });
         }
     },
 };

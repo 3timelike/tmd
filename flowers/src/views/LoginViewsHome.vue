@@ -9,12 +9,21 @@
             <el-form ref="form" :model="form" :rules="rules" size="large">
 
                 <el-form-item prop="username" label="账号">
-                    <el-input v-model="form.username" clearable prefix-icon="avatar"></el-input>
+                    <el-input v-model="form.username" clearable ></el-input>
                 </el-form-item>
 
                 <el-form-item prop="password" label="密码">
                     <el-input v-model="form.password" prefix-icon="lock" show-password></el-input>
                 </el-form-item>
+
+                   <el-form-item prop="vercode" label="验证码 ">
+                    <el-input v-model="form.vercode" clearable ></el-input>
+                    <el-button  style="width: 20%" type="primary" @click="getcode">获取验证码</el-button>
+                    <el-image :src="codeimage" alt="Captcha" style="width: 200px; height: 100px;" />
+                </el-form-item>
+
+                  
+                
 
                 <el-form-item :model="form" prop="identity">
                     <el-radio v-model="form.identity" label="user" style="color: grey">用户</el-radio>
