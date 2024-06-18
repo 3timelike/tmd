@@ -9,52 +9,18 @@
         <el-input v-model.lazy="findNewsPageInfo.keyWords" placeholder="搜索成员"></el-input>
         <!-- <el-button   type="primary">搜索</el-button> -->
       </div>
-      <div class="info-item" style="margin-right: 50px">
-        <!-- <el-icon>
-          <user />
-        </el-icon>
-        头像 -->
-        <el-icon>
-          <user />
-        </el-icon>
-        用户名
-        <el-icon>
-          <location />
-        </el-icon>
-        姓名
 
-        <el-icon>
-          <tickets />
-        </el-icon>
-        性别
-
-        <el-icon>
-          <office-building />
-        </el-icon>
-        年龄
-
-        <el-icon>
-          <iphone />
-        </el-icon>
-        手机号
-
-        <el-icon>
-          <office-building />
-        </el-icon>
-        邮箱
-      </div>
-      <!-- 列表 -->
-      <div class="containerItem" v-for="item in pageData" :key="item">
-        <div>
-          <span class="x">{{ item.username }}</span>
-          <span class="x">{{ item.name }}</span>
-          <span class="x">{{ item.gender }}</span>
-          <span class="x">{{ item.age }}</span>
-          <span class="x">{{ item.phone_num }}</span>
-          <span class="x">{{ item.email }}</span>
-        </div>
-      </div>
-
+<!--      -->
+      <el-table size="big" current-row-key="id" :data="pageData" stripe highlight-current-row>
+        <el-table-column type="index" align="center" label="序号"></el-table-column>
+        <el-table-column prop="username" label="用户名" align="center"></el-table-column>
+        <el-table-column prop="name" label="姓名" align="center"></el-table-column>
+        <el-table-column prop="gender" label="性别" align="center"></el-table-column>
+        <el-table-column prop="age" label="年龄" align="center"></el-table-column>
+        <el-table-column prop="phone_num" label="手机号" align="center"></el-table-column>
+        <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
+      </el-table>
+<!--      -->
       <!-- 分页器 -->
       <div style="margin-top: 20px">
         <el-pagination

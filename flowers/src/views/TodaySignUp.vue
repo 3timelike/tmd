@@ -11,37 +11,21 @@
     </div>
     <div class="info-item" style="margin-right: 50px">
         <span class="el-dropdown-link">
-          <el-icon :size="18" style="float: center;margin-right: 7px;"><avatar/></el-icon>
+          <el-icon :size="18" style="margin-right: 7px;"><avatar/></el-icon>
                     今日已签到
           <el-icon class="el-icon--right"><arrow-down/></el-icon><br>
         </span>
-        <el-icon>
-          <user />
-        </el-icon>
-        用户名
-        
-        <el-icon>
-          <location />
-        </el-icon>
-        姓名
-        <el-icon>
-          <user />
-        </el-icon>
-        签到日期
-        <el-icon>
-          <location />
-        </el-icon>
-        签到时间
     </div>
       <!-- 已签到列表 -->
-      <div class="containerItem" v-for="item in pageData" :key="item">
-        <div>
-          <span class="x">{{ item.sign_username }}</span>
-          <span class="x">{{ item.sign_name }}</span>
-          <span class="x">{{ item.sign_data }}</span>
-          <span class="x">{{ item.sign_time }}</span>
-        </div>
-      </div>
+<!--      -->
+      <el-table size="big" current-row-key="id" :data="pageData" stripe highlight-current-row>
+        <el-table-column type="index" align="center" label="序号"></el-table-column>
+        <el-table-column prop="sign_username" label="用户名" align="center"></el-table-column>
+        <el-table-column prop="sign_name" label="姓名" align="center"></el-table-column>
+        <el-table-column prop="sign_data" label="签到日期" align="center"></el-table-column>
+        <el-table-column prop="sign_time" label="签到时间" align="center"></el-table-column>
+      </el-table>
+<!--      -->
       <div style="margin-top: 20px">
         <el-pagination
           v-model:current-page="findNewsPageInfo.pageNum"
@@ -62,13 +46,11 @@
         </span>
     </div>
        <!-- 未签到列表 -->
-      <div class="containerItem" v-for="item in pageData1" :key="item">
-        <div>
-          <span class="x">{{ item.username }}</span>
-          <span class="x">{{ item.name }}</span>
-          
-        </div>
-      </div>
+      <el-table size="big" current-row-key="id" :data="pageData1" stripe highlight-current-row>
+        <el-table-column type="index" align="center" label="序号"></el-table-column>
+        <el-table-column prop="username" label="用户名" align="center"></el-table-column>
+        <el-table-column prop="name" label="姓名" align="center"></el-table-column>
+      </el-table>
       <!-- 分页器 -->
       <div style="margin-top: 20px">
         <el-pagination

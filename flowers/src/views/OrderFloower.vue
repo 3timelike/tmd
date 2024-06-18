@@ -9,38 +9,21 @@
         <el-input v-model.lazy="findNewsPageInfo.keyWords" placeholder="搜索订单"></el-input>
         <!-- <el-button   type="primary">搜索</el-button> 根据订单内容（花名）搜索-->
       </div>
-      <div class="info-item" style="margin-right: 50px">
-        <el-icon>
-          <location />
-        </el-icon>
-       订单号
 
-        <el-icon>
-          <tickets />
-        </el-icon>
-        订单内容
-
-        
-      </div>
       <!-- 列表 -->
-      <div class="containerItem" v-for="item in pageData" :key="item">
-        <div>
-          <span class="x">{{ item.o_id }}</span>
-          <span class="x">{{ item.f_name }}</span>
+      <el-table size="big" current-row-key="id" :data="pageData" stripe highlight-current-row>
+        <el-table-column type="index" align="center" label="序号"></el-table-column>
+        <el-table-column prop="o_id" label="订单号" align="center"></el-table-column>
+        <el-table-column prop="f_name" label="订单内容" align="center"></el-table-column>
+        <el-table-column label="操作">
           <el-tooltip content="查看详情信息" placement="top">
-                <el-button icon="plus" style="width: 50px" @click="observe(item)"></el-button>
-        </el-tooltip>
-        <el-tooltip content="删除订单" placement="top">
-                <el-button icon="plus" style="width: 50px" @click="removewill(item)"></el-button>
-        </el-tooltip>
-          <span class="x">{{ item.uid }}</span>
-          <!-- <span class="x">{{ item.gender }}</span>
-          <span class="x">{{ item.age }}</span>
-          <span class="x">{{ item.phone_num }}</span>
-          <span class="x">{{ item.email }}</span> -->
-        </div>
-      </div>
-
+            <el-button icon="plus" style="width: 50px" @click="observe(row)">详情</el-button>
+          </el-tooltip>
+          <el-tooltip content="删除订单" placement="top">
+            <el-button icon="plus" style="width: 50px" @click="removewill(row)">删除</el-button>
+          </el-tooltip>
+        </el-table-column>
+      </el-table>
       <!-- 分页器 -->
       <div style="margin-top: 20px">
         <el-pagination

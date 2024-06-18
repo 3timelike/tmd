@@ -9,82 +9,47 @@
         <el-input v-model.lazy="findNewsPageInfo.keyWords" placeholder="搜索鲜花"></el-input> 
       
         <el-tooltip content="添加" placement="top">
-                <el-button icon="plus" style="width: 50px" @click="Edit"></el-button>
+                <el-button icon="plus" style="width: 50px" @click="Edit">添加</el-button>
         </el-tooltip>
-            
       </div>
-      <div class="info-item" style="margin-right: 50px">
-        <el-icon>
-          <user />
-        </el-icon>
-        花名
-        <el-icon>
-          <location />
-        </el-icon>
-        颜色
 
-        <el-icon>
-          <tickets />
-        </el-icon>
-        含义
+      <div>
+        <el-table size="big" current-row-key="id" :data="fdata" stripe highlight-current-row>
+          <el-table-column type="index" align="center" label="序号"></el-table-column>
+          <el-table-column prop="f_name" label="花名" align="center"></el-table-column>
+          <el-table-column prop="f_color" label="颜色" align="center"></el-table-column>
+          <el-table-column prop="f_meaning" label="含义" align="center"></el-table-column>
+          <el-table-column prop="f_exist_time" label="花期" align="center"></el-table-column>
+          <el-table-column prop="f_product_area" label="产地" align="center"></el-table-column>
+          <el-table-column prop="f_aroma" label="香味" align="center"></el-table-column>
+          <el-table-column prop="f_petal_num" label="花瓣" align="center"></el-table-column>
+          <el-table-column prop="f_floower_hign" label="海拔" align="center"></el-table-column>
+          <el-table-column label="操作">
+            <el-tooltip content="修改鲜花信息" placement="top">
+              <el-button icon="plus" style="width: 50px" @click="update(row)">修改</el-button>
+            </el-tooltip>
 
-        <el-icon>
-          <office-building />
-        </el-icon>
-        花期
+            <el-tooltip content="删除此鲜花" placement="top">
+              <el-button icon="plus" style="width: 50px" @click="remove(row)">删除</el-button>
+            </el-tooltip>
 
-        <el-icon>
-          <iphone />
-        </el-icon>
-        产地
 
-        <el-icon>
-          <office-building />
-        </el-icon>
-        香味
-        <el-icon>
-          <office-building />
-        </el-icon>
-        花瓣
-        <el-icon>
-          <office-building />
-        </el-icon>
-        高度
-        <el-icon>
-          <office-building />
-        </el-icon>
-        上传时间
+            <el-tooltip  content="购买此鲜花" placement="top">
+              <el-button  style="width: 50px" @click="buyFloower(row)">购买</el-button>
+            </el-tooltip>
+          </el-table-column>
+        </el-table>
       </div>
       <!-- 列表 -->
-      <div class="containerItem" v-for="item in fdata" :key="item">
-        <div>
-            <span class="x">{{ item.f_id }}</span>
-          <span class="x">{{ item.f_name }}</span>
-          <span class="x">{{ item.f_num }}</span>
-          <!-- <span class="x">{{ item.f_ }}</span>
-          <span class="x">{{ item.gender }}</span>
-          <span class="x">{{ item.age }}</span>
-          <span class="x">{{ item.phone_num }}</span>
-          <span class="x">{{ item.email }}</span>
-          <span class="x">{{ item.email }}</span>
-          <span class="x">{{ item.email }}</span> -->
-          <el-tooltip content="修改鲜花信息" placement="top">
-                <el-button icon="plus" style="width: 50px" @click="update(item)"></el-button>
-        </el-tooltip>
+<!--      <div class="containerItem" v-for="item in fdata" :key="item">-->
+<!--        <div>-->
+<!--            <span class="x">{{ item.f_id }}</span>-->
+<!--          <span class="x">{{ item.f_name }}</span>-->
+<!--          <span class="x">{{ item.f_num }}</span>-->
 
-        <el-tooltip content="删除此鲜花" placement="top">
-                <el-button icon="plus" style="width: 50px" @click="remove(item)"></el-button>
-        </el-tooltip>
+<!--        </div>-->
+<!--      </div>-->
 
-           
-                <el-tooltip  content="购买此鲜花" placement="top">
-                <el-button icon="plus" style="width: 50px" @click="buyFloower(item)"></el-button>
-                </el-tooltip>
-             
-             
-
-        </div>
-      </div>
 
       <!-- 分页器 -->
       <div style="margin-top: 20px">
