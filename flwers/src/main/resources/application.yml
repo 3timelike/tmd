@@ -39,7 +39,7 @@ server:
 
 # mybatis-plus的配置
 mybatis-plus:
-  type-aliases-package: com.atguigu.pojo
+  type-aliases-package: org.example.pojo
   global-config:
     db-config:
       logic-delete-field: isDeleted  #全局逻辑删除
