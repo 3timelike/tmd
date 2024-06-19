@@ -11,46 +11,66 @@
         <el-tooltip content="添加" placement="top">
                 <el-button icon="plus" style="width: 50px" @click="Edit">添加</el-button>
         </el-tooltip>
+            
       </div>
+    
+       <el-table :data="fdata" style="width: 100%">
+      <el-table-column label="序号" prop="f_id"></el-table-column>
+      <el-table-column label="花名" prop="f_name"></el-table-column>
+      <el-table-column label="颜色" prop="f_color"></el-table-column>
+      <el-table-column label="花语" prop="f_meaning"></el-table-column>
+      <el-table-column label="花期" prop="f_exist_time"></el-table-column>
+      <el-table-column label="产地" prop="f_product_area"></el-table-column>
+      <el-table-column label="香味" prop="f_aroma"></el-table-column>
+      <el-table-column label="花瓣" prop="f_petal_num"></el-table-column>
+      <el-table-column label="高度" prop="f_floower_hign"></el-table-column>
+      <el-table-column label="库存" prop="f_num"></el-table-column>
+      <el-table-column label="上传时间" prop="f_create_date"></el-table-column>
+       <el-table-column  label = "操作" >
+        
+      
+      <template v-slot="scope">
+              <el-button icon="plus" style="width: 50px" @click="update(scope.row)">修改</el-button>
+      </template>
+</el-table-column >
+            <el-table-column  label = "操作">
+        
+      
+      <template v-slot="scope">
+              <el-button icon="plus" style="width: 50px" @click="remove(scope.row)">删除</el-button>
+      </template>
+            </el-table-column>
 
-      <div>
-        <el-table size="big" current-row-key="id" :data="fdata" stripe highlight-current-row>
-          <el-table-column type="index" align="center" label="序号"></el-table-column>
-          <el-table-column prop="f_name" label="花名" align="center"></el-table-column>
-          <el-table-column prop="f_color" label="颜色" align="center"></el-table-column>
-          <el-table-column prop="f_meaning" label="含义" align="center"></el-table-column>
-          <el-table-column prop="f_exist_time" label="花期" align="center"></el-table-column>
-          <el-table-column prop="f_product_area" label="产地" align="center"></el-table-column>
-          <el-table-column prop="f_aroma" label="香味" align="center"></el-table-column>
-          <el-table-column prop="f_petal_num" label="花瓣" align="center"></el-table-column>
-          <el-table-column prop="f_floower_hign" label="海拔" align="center"></el-table-column>
-          <el-table-column label="操作">
-            <el-tooltip content="修改鲜花信息" placement="top">
-              <el-button icon="plus" style="width: 50px" @click="update(row)">修改</el-button>
-            </el-tooltip>
 
-            <el-tooltip content="删除此鲜花" placement="top">
-              <el-button icon="plus" style="width: 50px" @click="remove(row)">删除</el-button>
-            </el-tooltip>
-
-
-            <el-tooltip  content="购买此鲜花" placement="top">
-              <el-button  style="width: 50px" @click="buyFloower(row)">购买</el-button>
-            </el-tooltip>
-          </el-table-column>
-        </el-table>
-      </div>
-<!--     test -->
+            <el-table-column  label = "操作" >
+        
+      
+      <template v-slot="scope">
+              <el-button  style="width: 50px" @click="buyFloower(scope.row)">购买</el-button>
+      </template>
+            </el-table-column>
+       
+    </el-table>
+      
       <!-- 列表 -->
-<!--      <div class="containerItem" v-for="item in fdata" :key="item">-->
-<!--        <div>-->
-<!--            <span class="x">{{ item.f_id }}</span>-->
-<!--          <span class="x">{{ item.f_name }}</span>-->
-<!--          <span class="x">{{ item.f_num }}</span>-->
+      <!-- <div class="containerItem" v-for="item in fdata" :key="item">
+        <div>
+            <el-tooltip content="修改鲜花信息" placement="top">
+                <el-button icon="plus" style="width: 50px" @click="update(item)"></el-button>
+        </el-tooltip>
 
-<!--        </div>-->
-<!--      </div>-->
+        <el-tooltip content="删除此鲜花" placement="top">
+                <el-button icon="plus" style="width: 50px" @click="remove(item)"></el-button>
+        </el-tooltip>
 
+         <el-tooltip  content="购买此鲜花" placement="top">
+                <el-button icon="plus" style="width: 50px" @click="buyFloower(item)"></el-button>
+                </el-tooltip>  
+          </div>
+      </div>         -->
+        
+          
+        
 
       <!-- 分页器 -->
       <div style="margin-top: 20px">
@@ -123,7 +143,7 @@
 
                     <el-form ref="tempfdata" :model="tempfdata" :rules="rules" label-width="120px">
 
-                          <el-form-item label="花的id" >
+                          <el-form-item label="花的序号" >
                             <el-input v-model="tempfdata.f_id"  disabled style="width: 80%"></el-input>
                         </el-form-item> 
 
@@ -234,7 +254,7 @@ export default {
                 pageSize: 5, // 页大小
             },
             totalSize : 0, //分页总数量
-            fdata: {
+            fdata: [{
                 f_id:"",
                 f_name: "",
                 f_color: "",
@@ -246,9 +266,9 @@ export default {
                 f_floower_hign:0,
                 f_num:0,
                 f_create_date:""
-            },
+            }],
             tempfdata: {
-                f_id:"",
+                 f_id:"",
                 f_name: "",
                 f_color: "",
                 f_meaning: "",
@@ -258,8 +278,8 @@ export default {
                 f_petal_num:0,
                 f_floower_hign:0,
                 f_num:0,
-                f_create_date:"",
-                f_avatar:""
+                f_create_date:""
+               
             },
             form: {
                 f_name: "",
@@ -343,10 +363,11 @@ watch: {
         find() {
             request.post("/" + this.identity + "/findAllFloowers",this.findNewsPageInfo).then((res) => {
                 //更新fdata
-                this.fdata =  res.data.pageInfo.pageData
                 this.findNewsPageInfo.pageNum = res.data.pageInfo.pageNum;
                 this.findNewsPageInfo.pageSize = res.data.pageInfo.pageSize;
-                this.totalSize = +res.data.pageInfo.totalSize;
+                this.totalSize = res.data.pageInfo.totalSize;
+                this.fdata =  res.data.pageInfo.pageData
+                
             });
         },
         load() {
@@ -400,11 +421,13 @@ watch: {
                 }
             });
         },
-        update(item){
-            this.tempfdata = item
+        update(row){
+            console.log(row);
+           this.tempfdata = row
            this.secondvisible = true;
         },
         remove(item){
+            console.log(item);
          request.post("/" + this.identity + "/removeFloower",item).then((res) => {
                 if (res.code === 200) {
                             ElMessage({

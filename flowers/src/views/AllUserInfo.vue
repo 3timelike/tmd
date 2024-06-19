@@ -9,18 +9,17 @@
         <el-input v-model.lazy="findNewsPageInfo.keyWords" placeholder="搜索成员"></el-input>
         <!-- <el-button   type="primary">搜索</el-button> -->
       </div>
-
-<!--      -->
-      <el-table size="big" current-row-key="id" :data="pageData" stripe highlight-current-row>
-        <el-table-column type="index" align="center" label="序号"></el-table-column>
-        <el-table-column prop="username" label="用户名" align="center"></el-table-column>
-        <el-table-column prop="name" label="姓名" align="center"></el-table-column>
-        <el-table-column prop="gender" label="性别" align="center"></el-table-column>
-        <el-table-column prop="age" label="年龄" align="center"></el-table-column>
-        <el-table-column prop="phone_num" label="手机号" align="center"></el-table-column>
-        <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
-      </el-table>
-<!--      -->
+      <div>
+     <el-table :data="pageData" style="width: 100%">
+      <el-table-column label="用户名" prop="username"></el-table-column>
+      <el-table-column label="姓名" prop="name"></el-table-column>
+      <el-table-column label="性别" prop="gender"></el-table-column>
+      <el-table-column label="年龄" prop="age"></el-table-column>
+      <el-table-column label="手机号" prop="phone_num"></el-table-column>
+      <el-table-column label="邮箱" prop="email"></el-table-column>
+    </el-table>
+      
+      </div>
       <!-- 分页器 -->
       <div style="margin-top: 20px">
         <el-pagination
