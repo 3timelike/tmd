@@ -3,7 +3,24 @@
     <div style="width: 200px;margin-left: 10px; font-weight: bold; color: dodgerblue">川の鲜花店</div>
     <Clock style="font-size: 20px;position: absolute;left: 50%;overflow: hidden;"/>
     <div style="flex: 1"></div>
-    
+    <div class="right-info">
+      <el-dropdown>
+        <span class="el-dropdown-link">
+          <el-icon :size="18" style="float: left;margin-right: 7px;"><avatar/></el-icon>
+          个人中心
+          <el-icon class="el-icon--right"><arrow-down/></el-icon>
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="selfInfoManage">个人信息</el-dropdown-item>
+             <el-dropdown-item @click="signup">今日签到</el-dropdown-item>
+             <el-dropdown-item @click="alluser">成员信息</el-dropdown-item>
+             <el-dropdown-item @click="selectsign">查看今日签到记录</el-dropdown-item>
+            <el-dropdown-item @click="SignOut">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
   </div>
 </template>
 
