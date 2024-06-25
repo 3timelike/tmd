@@ -13,9 +13,15 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="selfInfoManage">个人信息</el-dropdown-item>
+<<<<<<< HEAD
              <el-dropdown-item v-if="this.identify === 'user'" @click="signup">今日签到</el-dropdown-item>
              <!-- <el-dropdown-item @click="alluser">成员信息</el-dropdown-item>
              <el-dropdown-item @click="selectsign">查看今日签到记录</el-dropdown-item> -->
+=======
+             <el-dropdown-item @click="signup">今日签到</el-dropdown-item>
+             <el-dropdown-item @click="alluser">成员信息</el-dropdown-item>
+             <el-dropdown-item @click="selectsign">查看今日签到记录</el-dropdown-item>
+>>>>>>> 0d9d7fd4f0b05159cb4c01c62d9c0fdbbedf5d81
             <el-dropdown-item @click="SignOut">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
