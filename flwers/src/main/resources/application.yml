@@ -3,9 +3,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://localhost:3306/floowers?serverTimezone=UTC
+      url: jdbc:mysql://localhost:3307/floowers
       username: root
-      password: chuan
+      password: 123
       driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
@@ -44,7 +44,7 @@ mybatis-plus:
     db-config:
       logic-delete-field: isDeleted  #全局逻辑删除
       id-type: auto #主键策略自增长
-      table-prefix: news_ # 设置表的前缀
+      #table-prefix: news_ # 设置表的前缀
 
 ##jwt配置
 #jwt:

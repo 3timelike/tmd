@@ -29,6 +29,9 @@ public interface OrderFloowersMapper extends BaseMapper<OrderFloower>{
 
     @Delete("DELETE FROM order_floowers WHERE o_id = #{o.o_id}")
     int removeOrder(@Param("o") OrderBack o);
+
+    @Select("SELECT o_id,f_id,uid,o_phone_num,phone_num,o_area,o_note,o_time ,f_name FROM order_floowers where uid = #{uid} and f_name like concat('%',#{portalVo.keyWords},'%')")
+    IPage<Map> selectUserOrders(IPage<Map> page, PortalVo portalVo, Integer uid);
 }
 
 

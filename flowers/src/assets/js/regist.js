@@ -145,7 +145,7 @@ export default {
             }
         },
         async uploadImg() {
-            await request.get("/files/registavatar").then((res) => {
+            await request.get("/files/getavatarname").then((res) => {
                 if (res.code === 200) {
                     ElMessage({
                         message: "获取头像名成功",

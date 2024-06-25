@@ -8,35 +8,44 @@
       <div class="rightInput" style="margin-right: 50px">
         <el-input v-model.lazy="findNewsPageInfo.keyWords" placeholder="搜索鲜花"></el-input> 
       
-        <el-tooltip content="添加" placement="top">
+        <el-tooltip v-if="this.judgeIdentity()===1" content="添加" placement="top">
                 <el-button icon="plus" style="width: 50px" @click="Edit">添加</el-button>
         </el-tooltip>
             
       </div>
     
        <el-table :data="fdata" style="width: 100%">
-      <el-table-column label="序号" prop="f_id"></el-table-column>
+      <el-table-column v-if="false" label="序号" prop="f_id"></el-table-column>
       <el-table-column label="花名" prop="f_name"></el-table-column>
-      <el-table-column label="颜色" prop="f_color"></el-table-column>
-      <el-table-column label="花语" prop="f_meaning"></el-table-column>
-      <el-table-column label="花期" prop="f_exist_time"></el-table-column>
-      <el-table-column label="产地" prop="f_product_area"></el-table-column>
-      <el-table-column label="香味" prop="f_aroma"></el-table-column>
-      <el-table-column label="花瓣" prop="f_petal_num"></el-table-column>
-      <el-table-column label="高度" prop="f_floower_hign"></el-table-column>
+      <el-table-column v-if="false"  label="颜色" prop="f_color"></el-table-column>
+      <el-table-column  label="花语" prop="f_meaning"></el-table-column>
+      <el-table-column v-if="false"  label="花期" prop="f_exist_time"></el-table-column>
+      <el-table-column v-if="false"  label="产地" prop="f_product_area"></el-table-column>
+      <el-table-column v-if="false"  label="香味" prop="f_aroma"></el-table-column>
+      <el-table-column v-if="false"  label="花瓣" prop="f_petal_num"></el-table-column>
+      <el-table-column v-if="false"  label="高度" prop="f_floower_hign"></el-table-column>
       <el-table-column label="库存" prop="f_num"></el-table-column>
-      <el-table-column label="上传时间" prop="f_create_date"></el-table-column>
-       <el-table-column  label = "操作" >
+      <el-table-column v-if="false"  label="上传时间" prop="f_create_date"></el-table-column>
+      <el-table-column v-if="false" label="文件名" prop="f_avatar"></el-table-column>
+
+      <el-table-column  label = "" >
         
       
-      <template v-slot="scope">
+      <template  v-slot="scope">
+              <el-button icon="plus" style="width: 50px" @click="FloowerInfo(scope.row)">详情信息</el-button>
+      </template>
+</el-table-column >
+       <el-table-column  label = "" >
+        
+      
+      <template v-if="this.judgeIdentity()===1" v-slot="scope">
               <el-button icon="plus" style="width: 50px" @click="update(scope.row)">修改</el-button>
       </template>
 </el-table-column >
-            <el-table-column  label = "操作">
+            <el-table-column  label = "">
         
       
-      <template v-slot="scope">
+      <template v-if="this.judgeIdentity()===1" v-slot="scope">
               <el-button icon="plus" style="width: 50px" @click="remove(scope.row)">删除</el-button>
       </template>
             </el-table-column>
@@ -90,7 +99,23 @@
                 <el-dialog v-model="dialogVisible" title="添加操作" width="30%" @close="cancel">
 
                     <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-
+                       <div>
+                        <el-upload :on-success="uploadImg" :show-file-list="false"
+                              action="http://localhost:9090/files/upload"
+                              class="upload-demo"
+                        >
+                            <div class="AvatarDiv">
+                                <img :src="'data:image;base64,' + image" :style="imgDisplay"
+                                     style="width: 80px; height: 80px; border-radius: 40px"/>
+                                <div class="editImg">
+                                    上传图片
+                                    <el-icon color="color">
+                                        <edit></edit>
+                                    </el-icon>
+                                </div>
+                            </div>
+                        </el-upload>
+                    </div>
                         <el-form-item label="花名" >
                             <el-input v-model="form.f_name"  style="width: 80%"></el-input>
                         </el-form-item>
@@ -140,9 +165,24 @@
             <div>
                 <!--      更改鲜花信息弹窗  -->
                 <el-dialog v-model="secondvisible" title="更改操作" width="30%" @close="cancel1">
-
+                      
                     <el-form ref="tempfdata" :model="tempfdata" :rules="rules" label-width="120px">
-
+                               
+                                <el-upload :on-success="uploadSuccess" :show-file-list="false"
+                                   action="http://localhost:9090/files/upload"
+                                   class="upload-demo"
+                                >
+                           <div class="AvatarDiv" >
+                                <img :src="'data:image;base64,' + image" :style="imgDisplay"
+                                     style="width: 80px; height: 80px; border-radius: 40px"/>
+                                <div class="editImg">
+                                    相关照片
+                                    <el-icon color="color">
+                                        <edit></edit>
+                                    </el-icon>
+                                </div>
+                            </div>
+                               </el-upload>
                           <el-form-item label="花的序号" >
                             <el-input v-model="tempfdata.f_id"  disabled style="width: 80%"></el-input>
                         </el-form-item> 
@@ -233,6 +273,7 @@
 <script >
 import request from "@/utils/index";
 
+
 const {ElMessage} = require("element-plus");
 export default {
     name: "FloowersInfo",
@@ -240,6 +281,7 @@ export default {
         return {
             showpassword: true,
             image: "",
+            //tempimage: "",
             editJudge: true,
             disabled: true,
             dialogVisible: false,
@@ -248,6 +290,7 @@ export default {
             identity: "",
             //targetURL: "",
             //avatar: "",
+            
             findNewsPageInfo : {
                 keyWords: "", // 搜索关键字
                 pageNum: 1, // 页码数
@@ -262,9 +305,10 @@ export default {
                 f_exist_time: "",
                 f_product_area: "",
                 f_aroma: "",
-                f_petal_num:0,
-                f_floower_hign:0,
+                f_petal_num:"",
+                f_floower_hign:"",
                 f_num:0,
+                f_avatar:"",
                 f_create_date:""
             }],
             tempfdata: {
@@ -275,9 +319,10 @@ export default {
                 f_exist_time: "",
                 f_product_area: "",
                 f_aroma: "",
-                f_petal_num:0,
-                f_floower_hign:0,
+                f_petal_num:"",
+                f_floower_hign:"",
                 f_num:0,
+                f_avatar:"",
                 f_create_date:""
                
             },
@@ -288,8 +333,8 @@ export default {
                 f_exist_time: "",
                 f_product_area: "",
                 f_aroma: "",
-                f_petal_num:0,
-                f_floower_hign:0,
+                f_petal_num:"",
+                f_floower_hign:"",
                 f_num:0,
                 f_avatar:""
             },
@@ -302,6 +347,8 @@ export default {
                 o_note:"",
                 f_name:""
             },
+            
+
             rules: {
                 name: [
                     {required: true, message: "请输入姓名", trigger: "blur"},
@@ -349,7 +396,7 @@ export default {
         
     },
 watch: {
-  'findNewsPageInfo.keyWords': {
+  'findNewsPageInfo': {
     handler(newValue, oldValue) {
       // 在这里编写当 findNewsPageInfo.keyWords 变化时需要执行的逻辑
       console.log('findNewsPageInfo.keyWords 变化了', newValue, oldValue);
@@ -359,14 +406,28 @@ watch: {
   }
 },
     methods: {
+        FloowerInfo(info){
+            const path = "/floowerInfo/" + info.f_id;
+            this.$router.push({path: path})
+            console.log(info);
+        },
+        //鉴别身份
+    judgeIdentity() {
+      if (this.identity === 'user') {
+        return 0
+      } else if (this.identity === 'manager') {
+        return 1
+      } else
+        return 2
+    },
         //查询数据，
         find() {
-            request.post("/" + this.identity + "/findAllFloowers",this.findNewsPageInfo).then((res) => {
+            request.post("/findAllFloowers",this.findNewsPageInfo).then((res) => {
                 //更新fdata
                 this.findNewsPageInfo.pageNum = res.data.pageInfo.pageNum;
                 this.findNewsPageInfo.pageSize = res.data.pageInfo.pageSize;
                 this.totalSize = res.data.pageInfo.totalSize;
-                this.fdata =  res.data.pageInfo.pageData
+                this.fdata = res.data.pageInfo.pageData
                 
             });
         },
@@ -375,6 +436,7 @@ watch: {
         },
         Edit() {
             this.dialogVisible = true;
+            this.form = {form: "none"};
             // this.$nextTick(() => {
             //     this.$refs.form.resetFields();
             //     // this.form = JSON.parse(sessionStorage.getItem("user"));
@@ -388,6 +450,7 @@ watch: {
             this.editJudge = true;
             this.disabled = true;
             this.dialogVisible = false;
+           
         },
         cancel1() {
             //this.$refs.form.resetFields();
@@ -398,6 +461,7 @@ watch: {
             this.editJudge = true;
             this.disabled = true;
             this.secondvisible = false;
+             this.image = "";
         },
         async save() {
             this.$refs.form.validate(async (valid) => {
@@ -411,6 +475,7 @@ watch: {
                             });
                             this.find();
                             this.dialogVisible = false;
+                            
                         } else {
                             ElMessage({
                                 message: res.msg,
@@ -422,9 +487,13 @@ watch: {
             });
         },
         update(row){
-            console.log(row);
+            
            this.tempfdata = row
+            
+           this.init(this.tempfdata.f_avatar)
+
            this.secondvisible = true;
+           
         },
         remove(item){
             console.log(item);
@@ -469,6 +538,7 @@ watch: {
                     });
                 }
             });
+             this.image = "";
         },
 
         buyFloower(item){
@@ -515,7 +585,72 @@ watch: {
                 }
             });
         },
-        
+        async init(data) {
+            if (data == null || data == "") {
+                console.log("未存图片");
+                this.imgDisplay = {display: "none"};
+                
+            } else {
+                this.imgDisplay = {display: "block"};
+                
+                await request.get("/files/initAvatar/" + data).then((res) => {
+                    if (res.code === 200) {
+                        this.image = res.data.data;
+                    } else {
+                        ElMessage({
+                            message: res.msg,
+                            type: "error",
+                        });
+                    }
+                });
+            }
+        },
+         async uploadImg() {
+            await request.get("/files/getavatarname").then((res) => {
+                if (res.code === 200) {
+                    ElMessage({
+                        message: "获取头像名成功",
+                        type: "success",
+                    });
+                    //获取头像文件名
+                    this.form.f_avatar = res.data;
+                    console.log("上传成功：" + this.avatar);
+                    this.init(res.data)
+                } else {
+                    ElMessage({
+                        message: res.msg,
+                        type: "error",
+                    });
+                }
+            });
+        },
+        async uploadSuccess() {
+            // JSON.stringify(this.queryParam),
+            const requestOptions = {
+  headers: {
+    'Content-Type': 'application/json'
+    // 其他自定义头部
+  }
+};
+            console.log(this.tempfdata)
+            await request.post("/files/uploadFloowerAvatar", this.tempfdata.f_id,requestOptions).then((res) => {
+                if (res.code === 200) {
+                    ElMessage({
+                        message: "设置成功",
+                        type: "success",
+                    });
+                    //获取头像文件名
+                    this.tempfdata.f_avatar= res.data;
+                    console.log("上传成功：" + this.avatar);
+                    this.init(this.tempfdata.f_avatar);
+                } else {
+                    ElMessage({
+                        message: res.msg,
+                        type: "error",
+                    });
+                }
+            });
+        },
     },
 };
 </script>

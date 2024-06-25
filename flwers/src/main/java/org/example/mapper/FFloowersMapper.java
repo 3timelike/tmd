@@ -18,11 +18,11 @@ import java.util.Map;
 * @Entity org.example.mapper.FFloowers
 */
 public interface FFloowersMapper extends BaseMapper<FFloowers> {
-    @Insert("INSERT INTO f_floowers (f_name,f_color,f_meaning,f_exist_time,f_product_area,f_aroma,f_petal_num,f_floower_hign,f_num,f_create_date) \n" +
-            "VALUES(#{fVo.f_name},#{fVo.f_color},#{fVo.f_meaning},#{fVo.f_exist_time},#{fVo.f_product_area},#{fVo.f_aroma},#{fVo.f_petal_num},#{fVo.f_floower_hign},#{fVo.f_num},CURRENT_DATE) ")
+    @Insert("INSERT INTO f_floowers (f_name,f_color,f_meaning,f_exist_time,f_product_area,f_aroma,f_petal_num,f_floower_hign,f_num,f_create_date,f_avatar) \n" +
+            "VALUES(#{fVo.f_name},#{fVo.f_color},#{fVo.f_meaning},#{fVo.f_exist_time},#{fVo.f_product_area},#{fVo.f_aroma},#{fVo.f_petal_num},#{fVo.f_floower_hign},#{fVo.f_num},CURRENT_DATE,#{fVo.f_avatar}) ")
     int addNewFloower(@Param("fVo") FVo fVo);
 
-    @Select("SELECT f_id, f_name,f_color,f_meaning,f_exist_time,f_product_area,f_aroma,f_petal_num,f_floower_hign,f_num,f_create_date FROM f_floowers WHERE is_deleted = 0 and f_name like concat('%',#{portalVo.keyWords},'%')")
+    @Select("SELECT f_id, f_name,f_color,f_meaning,f_exist_time,f_product_area,f_aroma,f_petal_num,f_floower_hign,f_num,f_create_date,f_avatar FROM f_floowers WHERE is_deleted = 0 and f_name like concat('%',#{portalVo.keyWords},'%')")
     IPage<Map> findAllFloowers(IPage<Map> page,@Param("portalVo") PortalVo portalVo);
 
     @Update("UPDATE  f_floowers SET f_name=#{fVo.f_name},f_color = #{fVo.f_color},f_meaning = #{fVo.f_meaning},f_exist_time = #{fVo.f_exist_time},f_product_area=#{fVo.f_product_area},f_aroma=#{fVo.f_aroma},f_petal_num=#{fVo.f_petal_num},f_floower_hign=#{fVo.f_floower_hign} ,f_num=#{fVo.f_num} WHERE f_id = #{fVo.f_id}")
@@ -33,6 +33,12 @@ public interface FFloowersMapper extends BaseMapper<FFloowers> {
 
     @Update("UPDATE  f_floowers SET f_num = f_num - 1 WHERE f_id = #{f_id}")
     int updateFnum(@Param("f_id") int f_id);
+
+    @Update("UPDATE  f_floowers SET f_avatar = #{fVo.f_avatar} WHERE f_id = #{fVo.f_id}")
+    int updateByf_Id(@Param("fVo") FFloowers fVo);
+
+    @Select("SELECT f_id,f_name ,f_color,f_meaning,f_exist_time,f_product_area,f_aroma,f_petal_num,f_floower_hign,f_create_date,f_num,f_avatar FROM f_floowers WHERE is_deleted = 0 and f_id = #{id}")
+    Map<String,String> selectByf_Id(@Param("id") int id);
 }
 
 

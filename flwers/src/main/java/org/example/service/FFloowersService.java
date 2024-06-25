@@ -22,4 +22,8 @@ public interface FFloowersService {
      int removeFloower(FVo fVo);
 
      int updateFnum(int f_id);
+
+    int updateNewFloower(FFloowers  fVo);
+
+     Result findFloowersbyid(int fId);
 }

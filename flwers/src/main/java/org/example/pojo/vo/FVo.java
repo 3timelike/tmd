@@ -18,8 +18,9 @@ public class FVo {
 
     private String f_aroma;
 
-    private int f_petal_num;
+    private String f_petal_num;
 
-    private int f_floower_hign;
+    private String f_floower_hign;
+    private  String f_avatar;
     private int f_num;
 }

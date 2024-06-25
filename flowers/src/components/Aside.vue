@@ -18,87 +18,47 @@
 
 
 
-    <el-sub-menu v-if="this.judgeIdentity()!==0" index="2">
+    <el-sub-menu v-if="this.judgeIdentity()===1" index="2">
       <template #title>
         <el-icon>
           <user/>
         </el-icon>
         <span>成员信息</span>
       </template>
-      <el-menu-item v-if="this.judgeIdentity()!==0" index="/AllUserInfo">成员列表</el-menu-item>
-      <el-menu-item v-if="this.judgeIdentity()===2" index="/TodaySignUp">今日签到信息</el-menu-item>
+      <el-menu-item  index="/AllUserInfo">员工列表</el-menu-item>
+      <el-menu-item  index="/TodaySignUp">今日签到信息</el-menu-item>
     </el-sub-menu>
 
 
-    <el-sub-menu v-if="this.judgeIdentity()!==0" index="3">
+    <el-sub-menu  index="3">
       <template #title>
         <el-icon>
           <coin/>
         </el-icon>
         <span>鲜花管理</span>
       </template>
-      <el-menu-item v-if="this.judgeIdentity()!==0" index="/floowers">鲜花信息</el-menu-item>
+      <el-menu-item  index="/floowers">鲜花信息</el-menu-item>
     </el-sub-menu>
 
 
-    <el-sub-menu v-if="this.judgeIdentity()!==0" index="4">
+    <el-sub-menu  index="4">
       <template #title>
         <el-icon>
           <message/>
         </el-icon>
         <span>订单管理</span>
       </template>
-      <el-menu-item  index="/orderFloower">订单信息</el-menu-item>
+      <el-menu-item v-if="this.judgeIdentity()===1" index="/orderFloower">所有订单信息</el-menu-item>
+      <el-menu-item v-if="this.judgeIdentity()===0" index="/orderFloower">我的订单信息</el-menu-item>
       <!-- <el-menu-item v-if="this.judgeIdentity()!==0" index="/repairInfo">退订信息</el-menu-item>
       <el-menu-item v-if="this.judgeIdentity()!==0" index="/repairInfo">销售统计</el-menu-item> -->
     </el-sub-menu>
 
 
-    <!-- <el-sub-menu v-if="this.judgeIdentity()!==0" index="5">
-      <template #title>
-        <el-icon>
-          <pie-chart/>
-        </el-icon>
-        <span>申请管理</span>
-      </template>
-      <el-menu-item v-if="this.judgeIdentity()!==0" index="/adjustRoomInfo">调宿申请</el-menu-item>
-    </el-sub-menu> -->
+    
 
 
-    <!-- <el-menu-item v-if="this.judgeIdentity()!==0" index="/visitorInfo">
-      <svg class="icon" data-v-042ca774="" style="height: 18px; margin-right: 11px;"
-           viewBox="0 0 1024 1024"
-           xmlns="http://www.w3.org/2000/svg">
-        <path
-            d="M512 160c320 0 512 352 512 352S832 864 512 864 0 512 0 512s192-352 512-352zm0 64c-225.28 0-384.128 208.064-436.8 288 52.608 79.872 211.456 288 436.8 288 225.28 0 384.128-208.064 436.8-288-52.608-79.872-211.456-288-436.8-288zm0 64a224 224 0 110 448 224 224 0 010-448zm0 64a160.192 160.192 0 00-160 160c0 88.192 71.744 160 160 160s160-71.808 160-160-71.744-160-160-160z"
-            fill="currentColor"></path>
-      </svg>
-      <span>访客管理</span>
-    </el-menu-item> -->
-
-
-    <!-- <el-menu-item v-if="this.judgeIdentity()===0" index="/myRoomInfo">
-      <el-icon>
-        <school/>
-      </el-icon>
-      <span>我的宿舍</span>
-    </el-menu-item> -->
-
-
-    <!-- <el-menu-item v-if="this.judgeIdentity()===0" index="/applyChangeRoom">
-      <el-icon>
-        <takeaway-box/>
-      </el-icon>
-      <span>申请调宿</span>
-    </el-menu-item> -->
-
-
-    <!-- <el-menu-item v-if="this.judgeIdentity()===0" index="/applyRepairInfo">
-      <el-icon>
-        <set-up/>
-      </el-icon>
-      <span>报修申请</span>
-    </el-menu-item> -->
+   
 
 
     <el-menu-item index="/selfInfo">
@@ -112,8 +72,7 @@
 </template>
 
 <script>
-// import request from "@/utils/index";
-// import {ElMessage} from "element-plus";
+
 
 export default {
   name: "AsideHappy",
@@ -125,41 +84,41 @@ export default {
     }
   },
   created() {
-    //this.init()
+    this.init()
   },
   methods: {
-    // init() {
-    //   request.get("/main/loadIdentity").then((res) => {
-    //     if (res.code !== "0") {
-    //       ElMessage({
-    //         message: '用户会话过期',
-    //         type: 'error',
-    //       });
-    //       sessionStorage.clear()
-    //       request.get("/main/signOut");
-
-    //     }
-    //     window.sessionStorage.setItem("identity", JSON.stringify(res.data));
-    //     this.identity = res.data
-    //   });
-    //   request.get("/main/loadUserInfo").then((result) => {
-    //     if (result.code !== "0") {
-    //       ElMessage({
-    //         message: '用户会话过期',
-    //         type: 'error',
-    //       });
-    //       request.get("/main/signOut");
-    //       sessionStorage.clear()
-    //       this.$router.replace({path: "/login"});
-    //     }
-    //     window.sessionStorage.setItem("user", JSON.stringify(result.data));
-    //     this.user = result.data
-    //   });
-    // },
+    init() {
+      this.identity = window.sessionStorage.getItem('identity')
+      // request.get("/main/loadIdentity").then((res) => {
+      //   if (res.code !== 200) {
+      //     ElMessage({
+      //       message: '用户会话过期',
+      //       type: 'error',
+      //     });
+      //     sessionStorage.clear()
+      //     request.get("/main/signOut");
+      //    }
+      //   window.sessionStorage.setItem("identity", JSON.stringify(res.data));
+      //   this.identity = res.data
+      // });
+      // request.get("/main/loadUserInfo").then((result) => {
+      //   if (result.code !== "0") {
+      //     ElMessage({
+      //       message: '用户会话过期',
+      //       type: 'error',
+      //     });
+      //     request.get("/main/signOut");
+      //     sessionStorage.clear()
+      //     this.$router.replace({path: "/login"});
+      //   }
+      //   window.sessionStorage.setItem("user", JSON.stringify(result.data));
+      //   this.user = result.data
+      // });
+    },
     judgeIdentity() {
-      if (this.identity === 'user') {
+      if (this.identity.replace("\"",'').replace("\"",'') === 'user') {
         return 0
-      } else if (this.identity === 'manager') {
+      } else if (this.identity.replace("\"",'').replace("\"",'') === 'manager') {
         return 1
       } else
         return 2

@@ -4,8 +4,8 @@ import Layout from '../layout/Layout.vue'
 
 //配置信息中需要页面的相关配置
 const routes = [
-  {path: '/Login', name: 'Login', component: () => import("@/views/LoginViewsHome.vue")},
-   {path:"/regist",name:'regist',component: () => import("@/views/RegistViewsHome.vue")},
+  {path: '/Login', name: 'Login',component: () => import("@/views/LoginViewsHome.vue")},
+   {path:'/regist',name:'regist',component: () => import("@/views/RegistViewsHome.vue")},
   
   {
     path: '/Layout', name: 'Layout', component: Layout, children: [
@@ -13,7 +13,7 @@ const routes = [
         {path: '/home', name: 'Home', component: () => import("@/views/HomeViewsHome.vue")},
         {path: '/floowers', name: 'floowers', component: () => import("@/views/Floowers")},
         {path: '/orderFloower', name: 'orderFloower', component: () => import("@/views/OrderFloower")},
-        // {path: '/buildingInfo', name: 'BuildingInfo', component: () => import("@/views/BuildingInfo")},
+         {path: '/floowerInfo/:id', name: 'floowerInfo', component: () => import("@/views/FloowerInfo")},
         // {path: '/roomInfo', name: 'RoomInfo', component: () => import("@/views/RoomInfo")},
         // {path: '/noticeInfo', name: 'NoticeInfo', component: () => import("@/views/NoticeInfo")},
         // // {path: '/adjustRoomInfo', name: 'AdjustRoomInfo', component: () => import("@//AdjustRoomInfo")},
@@ -44,13 +44,20 @@ router.beforeEach((to, from, next) => {
   // next() 放行
   // next('/*') 强制跳转
   const user = window.sessionStorage.getItem('user')
+  if(to.path === '/regist'){
+    console.log("regist");
+      return next();
+  }
   if (to.path === '/Login') {
+    console.log("login");
       return next();
   }
   if (!user) {
+    console.log("login");
       return next('/Login')
   }
   if (to.path === '/' && user) {
+    console.log("home");
       return next('/home')
   }
   next()

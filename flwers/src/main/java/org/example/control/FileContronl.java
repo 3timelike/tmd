@@ -3,7 +3,10 @@ package org.example.control;
 
 import cn.hutool.core.io.FileUtil;
 import jakarta.annotation.Resource;
+import org.example.pojo.FFloowers;
 import org.example.pojo.User;
+import org.example.pojo.vo.FVo;
+import org.example.service.FFloowersService;
 import org.example.service.UserService;
 import org.example.utils.Result;
 import org.example.utils.UID;
@@ -52,7 +55,7 @@ public class FileContronl {
     }
 
     /**
-     * 将头像名称更新到数据库中
+     * 将头像名称更新到用户数据库中
      */
     @PostMapping("/uploadAvatar")
     public Result<?> uploadStuAvatar(@RequestBody User student) {
@@ -68,7 +71,29 @@ public class FileContronl {
         }
         return Result.error("设置头像失败");
     }
-    @GetMapping("/registavatar")
+    /**
+     * 将头像名称更新到鲜花数据库中
+     */
+    @Autowired
+    private FFloowersService fervice;
+    @PostMapping("/uploadFloowerAvatar")
+    //@ResponseBody
+    public Result<?> uploadFloowerAvatar(@RequestBody int f_id) {
+        System.out.println(f_id);
+        if (originalFilename != null) {
+            FFloowers fVo = new FFloowers();
+            fVo.setF_avatar(originalFilename);
+            fVo.setF_id(f_id);
+            int i = fervice.updateNewFloower(fVo);
+            if (i == 1) {
+                return Result.ok(originalFilename);
+            }
+        } else {
+            return Result.error("rootFilePath为空");
+        }
+        return Result.error("设置头像失败");
+    }
+    @GetMapping("/getavatarname")
     public Result<?> registavatar() {
         if (originalFilename != null) {
             return Result.ok(originalFilename);

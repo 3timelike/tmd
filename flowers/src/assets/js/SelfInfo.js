@@ -131,12 +131,12 @@ export default {
         //查询数据，更新session
         find() {
             this.form = JSON.parse(sessionStorage.getItem("user"));
-            request.post("/" + this.identity + "/login", this.form).then((res) => {
-                //更新sessionStorage
-                window.sessionStorage.setItem("user", JSON.stringify(res.data));
-                //更新页面数据
-                this.load();
-            });
+            // request.post("/" + this.identity + "/login", this.form).then((res) => {
+            //     //更新sessionStorage
+            //     window.sessionStorage.setItem("user", JSON.stringify(res.data));
+            //     //更新页面数据
+            //     this.load();
+            // });
         },
         Edit() {
             this.dialogVisible = true;

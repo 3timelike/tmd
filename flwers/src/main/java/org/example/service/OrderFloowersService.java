@@ -2,6 +2,7 @@ package org.example.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import jakarta.servlet.http.HttpSession;
 import org.example.pojo.OrderBack;
 import org.example.pojo.OrderFloower;
 import org.example.pojo.vo.PortalVo;
@@ -22,4 +23,6 @@ public interface OrderFloowersService  {
     int updateOrder(OrderFloower order);
 
     int removeOrder(OrderBack order);
+
+    Result findUserOrder(PortalVo portalVo, HttpSession session);
 }

@@ -1,5 +1,6 @@
 package org.example.service.serviceimpl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,6 +68,26 @@ public class FFloowersServiceImpl implements FFloowersService{
     public int updateFnum(int f_id) {
         int i = fFloowersMapper.updateFnum(f_id);
         return i;
+    }
+
+    @Override
+    public int updateNewFloower(FFloowers fVo) {
+        System.out.println(fVo);
+        int i =  fFloowersMapper.updateByf_Id(fVo);
+        return i;
+    }
+
+    @Override
+    public Result findFloowersbyid(int fId) {
+
+
+        Map<String, String> fFloowers =  fFloowersMapper.selectByf_Id(fId);
+
+
+        if(fFloowers == null)
+             return  Result.error("无数据");
+
+        return Result.ok(fFloowers);
     }
 }
 

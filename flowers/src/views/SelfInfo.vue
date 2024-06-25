@@ -95,7 +95,7 @@
                     </el-descriptions>
                     <el-tooltip content="修改信息" placement="bottom">
                         <el-button icon="Edit" size="large" style="margin-top: 30px; width: 80px" type="primary"
-                                   @click="Edit">
+                                   @click="Edit">修改个人信息
                         </el-button>
                     </el-tooltip>
                 </div>

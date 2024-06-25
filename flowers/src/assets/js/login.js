@@ -1,5 +1,5 @@
 import request from "@/utils/index";
-
+import router from '@/router/index'
 
 const {ElMessage} = require("element-plus");
 export default {
@@ -58,10 +58,8 @@ export default {
 // this.$router.replace 通常用于实现某些特殊的页面跳转需求，例如在表单提交成功后，将用户重定向到另一个页面，而且用户无法回退到表单提交前的页面
                             console.log(res.data)
                         } else {
-                            console.log("fail")
-                            console.log(res.message)
+                            this.getcode();
                             ElMessage({
-                                
                                 message: res.message,
                                 type: "error",
                             });
@@ -71,7 +69,12 @@ export default {
             });
         },
         regist(){
-            this.$router.push("/regist")
+           
+            console.log(this.$router) 
+            
+            router.push({name:'regist'})
+           //this.$router.replace({path: "/regist"});
+             console.log(11)
         },
         getcode(){
             request.get("/captcha").then((res) => {

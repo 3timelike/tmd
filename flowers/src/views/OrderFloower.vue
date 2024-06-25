@@ -20,11 +20,11 @@
       <el-table-column label="地址" prop="o_area"></el-table-column>
       <el-table-column label="备注" prop="o_note"></el-table-column>
       <el-table-column label="下单时间" prop="o_time"></el-table-column>
-        <el-table-column  label = "操作" >
+        <el-table-column  >
         
       
-      <template v-slot="scope">
-                <el-button icon="plus" style="width: 50px" @click="observe(scope.row)"></el-button>
+      <template  v-slot="scope">
+                <el-button icon="plus" style="width: 50px" @click="observe(scope.row)">详请信息</el-button>
         
       </template>
         </el-table-column>
@@ -32,7 +32,7 @@
         
       
       <template v-slot="scope">
-                <el-button icon="plus" style="width: 50px" @click="removewill(scope.row)"></el-button>
+                <el-button icon="plus" style="width: 50px" @click="removewill(scope.row)">删除订单</el-button>
       </template>
         </el-table-column>
       </el-table>
@@ -110,9 +110,12 @@ export default defineComponent({
 <script  setup>
 import request from "@/utils/index";
 import { ref, onMounted, watch } from "vue";
-// import { it } from "element-plus/es/locale";
+
 import { ElMessage } from 'element-plus'
 
+
+
+const identity=ref({});
 const findNewsPageInfo = ref({
   keyWords: "", // 搜索关键字
   pageNum: 1, // 页码数
@@ -182,8 +185,11 @@ const removeOrder = (info) => {
 watch(
   () => findNewsPageInfo.value,
   () => {
-    console.log("keywordchenge")
+    if(identity.value === 'user'){
+     getOwnPageList();
+  }else if(identity.value === 'manager'){
     getPageList();
+  }
   },
   {
     deep: true,
@@ -220,6 +226,10 @@ const getfindNewsPageInfo = (info) => {
   
   return request.post("/findOrderPage", info);
 };
+//分页查询当前用户自己的订单
+const getFindOwnPageInfo = (info) => {
+   return request.post("/findUserOrder",info);
+}
 //删除的回调
 // headline/removeByHid
 // const removeByHid = (id) => {
@@ -232,21 +242,42 @@ const getfindNewsPageInfo = (info) => {
 //             data:`hid=${id}`
 //   })
 // };
-// 初始化请求分页列表数据
+// 初始化请求全部订单分页列表数据
 const getPageList = async () => {
   let result = await getfindNewsPageInfo(findNewsPageInfo.value);
   console.log(result);
-  //pageData.splice(0, pageData.length, ...result.pageInfo.pageData);
+  
   pageData.value = result.data.pageInfo.pageData;
-  // alert(this.pageData.value)z
-  //console.log(pageData.value)
+  
   findNewsPageInfo.value.pageNum = result.data.pageInfo.pageNum;
   findNewsPageInfo.value.pageSize = result.data.pageInfo.pageSize;
   totalSize.value = +result.data.pageInfo.totalSize;
 };
+const getOwnPageList = async() => {
+      let result = await getFindOwnPageInfo(findNewsPageInfo.value);
+    console.log(result)
+    
+    pageData.value = result.data.pageInfo.pageData;
+    
+    findNewsPageInfo.value.pageNum = result.data.pageInfo.pageNum;
+    findNewsPageInfo.value.pageSize = result.data.pageInfo.pageSize;
+    totalSize.value = +result.data.pageInfo.totalSize;
+}
 // 组件挂载的生命周期钩子
 onMounted(() => {
-  getPageList();
+  identity.value = window.sessionStorage.getItem('identity');
+  console.log(identity.value.replace("\"",'').replace("\"",''))
+  //const trimmedIdentity = identity.value.replace(/^"|"$/g, '');
+  const trimmedIdentity = identity.value.replace("\"",'').replace("\"",'');
+  if(trimmedIdentity === 'user'){
+    console.log(111)
+     getOwnPageList();
+  }else if(trimmedIdentity=== 'manager'){
+    getPageList();
+  }else {
+    console.log(22);
+  }
+  
 });
 const observe = (item) => {
     firstvisible.value = true;
