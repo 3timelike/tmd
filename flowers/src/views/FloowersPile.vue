@@ -6,7 +6,7 @@
         <el-breadcrumb-item>鲜花信息</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="rightInput" style="margin-right: 50px">
-        <el-input v-model.lazy="findNewsPageInfo.keyWords" placeholder="搜索鲜花"></el-input> 
+        <el-input v-model.lazy="findNewsPageInfo.keyWords" placeholder="搜索花堆"></el-input>
       
         <el-tooltip v-if="this.judgeIdentity()===1" content="添加" placement="top">
                 <el-button icon="plus" style="width: 50px" @click="Edit">添加</el-button>
@@ -16,15 +16,9 @@
     
        <el-table :data="fdata" style="width: 100%">
       <el-table-column v-if="false" label="序号" prop="f_id"></el-table-column>
-      <el-table-column label="花名" prop="f_name"></el-table-column>
-      <el-table-column v-if="false"  label="颜色" prop="f_color"></el-table-column>
-      <el-table-column  label="花语" prop="f_meaning"></el-table-column>
-      <el-table-column v-if="false"  label="花期" prop="f_exist_time"></el-table-column>
-      <el-table-column v-if="false"  label="产地" prop="f_product_area"></el-table-column>
-      <el-table-column v-if="false"  label="香味" prop="f_aroma"></el-table-column>
-      <el-table-column v-if="false"  label="花瓣" prop="f_petal_num"></el-table-column>
-      <el-table-column v-if="false"  label="高度" prop="f_floower_hign"></el-table-column>
-      <el-table-column label="库存" prop="f_num"></el-table-column>
+      <el-table-column label="组合名称" prop="name"></el-table-column>
+      <el-table-column  label="价格" prop="price"></el-table-column>
+      <el-table-column label="库存" prop="amount"></el-table-column>
       <el-table-column v-if="false"  label="上传时间" prop="f_create_date"></el-table-column>
       <el-table-column v-if="false" label="文件名" prop="f_avatar"></el-table-column>
 
@@ -111,42 +105,22 @@
                             </div>
                         </el-upload>
                     </div>
-                        <el-form-item label="花名" >
-                            <el-input v-model="form.f_name"  style="width: 80%"></el-input>
+                        <el-form-item label="花堆名" >
+                            <el-input v-model="form.name"  style="width: 80%"></el-input>
                         </el-form-item>
-
-                        <el-form-item label="颜色" >
-                            <el-input v-model="form.f_color"  style="width: 80%"></el-input>
+                        <el-form-item label="价格" >
+                            <el-input v-model="form.price"  style="width: 80%"></el-input>
                         </el-form-item>
-
-                        <el-form-item  label="花语介绍" >
-                            <el-input v-model="form.f_meaning" style="width: 80%"></el-input>
-                        </el-form-item>
-
-                        <el-form-item label="花期介绍" >
-                            <el-input v-model="form.f_exist_time" style="width: 80%"></el-input>
-                        </el-form-item>
-
-                        <el-form-item label="产地" >
-                           <el-input v-model="form.f_product_area" style="width: 80%"></el-input>
-                            
-                        </el-form-item>
-
-                        <el-form-item label="味道介绍" >
-                            <el-input v-model.number="form.f_aroma" style="width: 80%"></el-input>
-                        </el-form-item>
-
-                        <el-form-item label="花瓣介绍" >
-                            <el-input v-model.number="form.f_petal_num" style="width: 80%"></el-input>
-                        </el-form-item>
-
-                        <el-form-item label="高度介绍" >
-                            <el-input v-model="form.f_floower_hign" style="width: 80%"></el-input>
-                        </el-form-item>
-
                         <el-form-item label="库存" >
-                            <el-input v-model="form.f_num" style="width: 80%"></el-input>
+                            <el-input v-model="form.amount" style="width: 80%"></el-input>
                         </el-form-item>
+                        
+                        <el-form-item>
+                            <el-select placeholder="组合鲜花" multiple v-model="form.flowers" style="width: 200px;" class="filter-item">
+                                <el-option v-for="item in flowersList" :value="item.f_id" :label="item.f_name" :key="item.f_id"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        
 
                     </el-form>
                     <template #footer>
@@ -161,7 +135,7 @@
                 <!--      更改鲜花信息弹窗  -->
                 <el-dialog v-model="secondvisible" title="更改操作" width="30%" @close="cancel1">
                       
-                    <el-form ref="tempfdata" :model="tempfdata" :rules="rules" label-width="120px">
+                    <el-form ref="form" :model="form" :rules="rules" label-width="120px">
                                
                                 <el-upload :on-success="uploadSuccess" :show-file-list="false"
                                    action="http://localhost:9090/files/upload"
@@ -179,44 +153,25 @@
                             </div>
                                </el-upload>
                           <el-form-item label="花的序号" >
-                            <el-input v-model="tempfdata.f_id"  disabled style="width: 80%"></el-input>
+                            <el-input v-model="form.id"  disabled style="width: 80%"></el-input>
                         </el-form-item> 
 
-                        <el-form-item label="花名" >
-                            <el-input v-model="tempfdata.f_name"   style="width: 80%"></el-input>
+                        <el-form-item label="花堆名" >
+                            <el-input v-model="form.name"   style="width: 80%"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="颜色" >
-                            <el-input v-model="tempfdata.f_color"  style="width: 80%"></el-input>
-                        </el-form-item>
-
-                        <el-form-item  label="花语介绍" >
-                            <el-input v-model="tempfdata.f_meaning" style="width: 80%"></el-input>
-                        </el-form-item>
-
-                        <el-form-item label="花期介绍" >
-                            <el-input v-model="tempfdata.f_exist_time" style="width: 80%"></el-input>
-                        </el-form-item>
-
-                        <el-form-item label="产地" >
-                           <el-input v-model="tempfdata.f_product_area" style="width: 80%"></el-input>
-                            
-                        </el-form-item>
-
-                        <el-form-item label="味道介绍" >
-                            <el-input v-model.number="tempfdata.f_aroma" style="width: 80%"></el-input>
-                        </el-form-item>
-
-                        <el-form-item label="花瓣介绍" >
-                            <el-input v-model.number="tempfdata.f_petal_num" style="width: 80%"></el-input>
-                        </el-form-item>
-
-                        <el-form-item label="高度介绍" >
-                            <el-input v-model="tempfdata.f_floower_hign" style="width: 80%"></el-input>
+                        <el-form-item label="价格" >
+                            <el-input v-model="form.price"   style="width: 80%"></el-input>
                         </el-form-item>
 
                         <el-form-item label="库存" >
-                            <el-input v-model="tempfdata.f_num" style="width: 80%"></el-input>
+                            <el-input v-model="form.amount" style="width: 80%"></el-input>
+                        </el-form-item>
+
+                        <el-form-item>
+                            <el-select placeholder="组合鲜花" multiple v-model="form.flowers" style="width: 200px;" class="filter-item">
+                                <el-option v-for="item in flowersList" :value="item.f_id" :label="item.f_name" :key="item.f_id"></el-option>
+                            </el-select>
                         </el-form-item>
 
                     </el-form>
@@ -294,20 +249,14 @@ export default {
             },
             totalSize : 0, //分页总数量
             fdata: [{
-                f_id:"",
-                f_name: "",
-                f_color: "",
-                f_meaning: "",
-                f_exist_time: "",
-                f_product_area: "",
-                f_aroma: "",
-                f_petal_num:"",
-                f_floower_hign:"",
-                f_num:0,
-                f_avatar:"",
-                f_create_date:""
+                id:"",
+                name: "",
+                price:"",
+                amount:"",
+                avatar:"",
+                flowers:[]
             }],
-            tempfdata: {
+            flowersList: {
                 f_id:"",
                 f_name: "",
                 f_color: "",
@@ -320,19 +269,14 @@ export default {
                 f_num:0,
                 f_avatar:"",
                 f_create_date:""
-               
             },
             form: {
-                f_name: "",
-                f_color: "",
-                f_meaning: "",
-                f_exist_time: "",
-                f_product_area: "",
-                f_aroma: "",
-                f_petal_num:"",
-                f_floower_hign:"",
-                f_num:0,
-                f_avatar:""
+                id:"",
+                name: "",
+                price:"",
+                amount:"",
+                avatar:"",
+                flowers:[]
             },
             buyFdata:{
                 f_id:"",
@@ -389,7 +333,7 @@ export default {
     created() {
         this.load();
         this.find();
-        
+        this.getAllFlowers();
     },
 watch: {
   'findNewsPageInfo': {
@@ -402,8 +346,14 @@ watch: {
   }
 },
     methods: {
+        // 获取所有的鲜花
+        getAllFlowers(){
+            request.post("/findAllFloowers",this.findNewsPageInfo).then((res) => {
+                this.flowersList = res.data.pageInfo.pageData
+            });
+        },
         FloowerInfo(info){
-            const path = "/floowerInfo/" + info.f_id;
+            const path = "/floowerPileInfo/" + info.id;
             this.$router.push({path: path})
             console.log(info);
         },
@@ -418,7 +368,7 @@ watch: {
     },
         //查询数据，
         find() {
-            request.post("/findAllFloowers",this.findNewsPageInfo).then((res) => {
+            request.post("/flowerPile/findAllFlowerPile",this.findNewsPageInfo).then((res) => {
                 //更新fdata
                 this.findNewsPageInfo.pageNum = res.data.pageInfo.pageNum;
                 this.findNewsPageInfo.pageSize = res.data.pageInfo.pageSize;
@@ -463,7 +413,7 @@ watch: {
             this.$refs.form.validate(async (valid) => {
                 if (valid) {
                     //添加
-                    await request.put("/" + this.identity + "/addNewFloower", this.form).then((res) => {
+                    await request.put("/" + this.identity + "/addNewFloowerPile", this.form).then((res) => {
                         if (res.code === 200) {
                             ElMessage({
                                 message: "添加成功",
@@ -484,16 +434,16 @@ watch: {
         },
         update(row){
             
-           this.tempfdata = row
+           this.form = row
             
-           this.init(this.tempfdata.f_avatar)
+           this.init(this.form.avatar)
 
            this.secondvisible = true;
            
         },
         remove(item){
             console.log(item);
-         request.post("/" + this.identity + "/removeFloower",item).then((res) => {
+         request.post("/" + this.identity + "/removeFloowerPile",item).then((res) => {
                 if (res.code === 200) {
                             ElMessage({
                                 message: "删除成功",
@@ -513,11 +463,11 @@ watch: {
            
         },
         async save1() {
-            this.$refs.tempfdata.validate(async (valid) => {
+            this.$refs.form.validate(async (valid) => {
                 if (valid) {
                     //修改
-                    console.log(this.tempfdata)
-                    await request.post("/" + this.identity + "/updateFloower", this.tempfdata).then((res) => {
+                    console.log(this.form)
+                    await request.post("/" + this.identity + "/updateFloowerPile", this.form).then((res) => {
                         if (res.code === 200) {
                             ElMessage({
                                 message: "修改成功",
@@ -538,9 +488,9 @@ watch: {
         },
 
         buyFloower(item){
-            if(item.f_num >= 1){
-            this.buyFdata.f_id = item.f_id
-            this.buyFdata.f_name = item.f_name
+            if(item.amount >= 1){
+            this.buyFdata.f_id = item.id
+            this.buyFdata.f_name = item.name
             this.buyFdata.u_id = JSON.parse(sessionStorage.getItem("user")).uid;
             this.buyFdata.phone_num = JSON.parse(sessionStorage.getItem("user")).phoneNum;
             this.threevisible = true;
@@ -563,7 +513,7 @@ watch: {
                 if (valid) {
                     //购买
                     console.log(this.buyFdata)
-                    await request.post("/buyFloower", this.buyFdata).then((res) => {
+                    await request.post("/flowerPile/buyFlowerPile", this.buyFdata).then((res) => {
                         if (res.code === 200) {
                             ElMessage({
                                 message: "购买成功",
@@ -609,7 +559,7 @@ watch: {
                         type: "success",
                     });
                     //获取头像文件名
-                    this.form.f_avatar = res.data;
+                    this.form.avatar = res.data;
                     console.log("上传成功：" + this.avatar);
                     this.init(res.data)
                 } else {
@@ -628,17 +578,17 @@ watch: {
     // 其他自定义头部
   }
 };
-            console.log(this.tempfdata)
-            await request.post("/files/uploadFloowerAvatar", this.tempfdata.f_id,requestOptions).then((res) => {
+            console.log(this.form)
+            await request.post("/files/uploadFloowerAvatar", this.form.id,requestOptions).then((res) => {
                 if (res.code === 200) {
                     ElMessage({
                         message: "设置成功",
                         type: "success",
                     });
                     //获取头像文件名
-                    this.tempfdata.f_avatar= res.data;
+                    this.form.avatar= res.data;
                     console.log("上传成功：" + this.avatar);
-                    this.init(this.tempfdata.f_avatar);
+                    this.init(this.form.avatar);
                 } else {
                     ElMessage({
                         message: res.msg,

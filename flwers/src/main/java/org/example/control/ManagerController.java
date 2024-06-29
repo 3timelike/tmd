@@ -1,15 +1,15 @@
 package org.example.control;
 
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
+import org.example.pojo.FlowerPile;
 import org.example.pojo.OrderBack;
 import org.example.pojo.OrderFloower;
 import org.example.pojo.User;
 import org.example.pojo.vo.FVo;
+import org.example.pojo.vo.FlowerPileVo;
 import org.example.pojo.vo.UserVo;
-import org.example.service.FFloowersService;
-import org.example.service.OrderBackService;
-import org.example.service.OrderFloowersService;
-import org.example.service.UserService;
+import org.example.service.*;
 import org.example.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +21,8 @@ public class ManagerController {
 
     @Autowired
     UserService userservice;
+    @Resource
+    private FlowerPileService flowerPileService;
     @PostMapping("/login")
     public Result<?> loginmanager(@RequestBody UserVo user, HttpSession session) {
         System.out.println(user.getUsername());
@@ -48,10 +50,29 @@ public class ManagerController {
             return Result.error("添加失败");
         }
     }
+
+    @PutMapping("/addNewFloowerPile")
+    public Result<?> addNewFloowerPile(@RequestBody FlowerPileVo flowerPile) {
+        int i = flowerPileService.addNewFloower(flowerPile);
+        if (i == 1) {
+            return Result.ok();
+        } else {
+            return Result.error("添加失败");
+        }
+    }
     @PostMapping("/updateFloower")
     public Result<?> updateFloower(@RequestBody FVo fVo) {
         System.out.println(fVo);
         int i = flservice.updateFloower(fVo);
+        if (i == 1) {
+            return Result.ok();
+        } else {
+            return Result.error("修改失败");
+        }
+    }
+    @PostMapping("/updateFloowerPile")
+    public Result<?> updateFloowerPile(@RequestBody FlowerPileVo flowerPileVo) {
+        int i = flowerPileService.updateFloower(flowerPileVo);
         if (i == 1) {
             return Result.ok();
         } else {
@@ -69,4 +90,14 @@ public class ManagerController {
         }
     }
 
+    @PostMapping("/removeFloowerPile")
+    public Result<?> removeFloowerPile(@RequestBody FlowerPileVo flowerPileVo) {
+        System.out.println(flowerPileVo);
+        int i = flowerPileService.removeFloower(flowerPileVo);
+        if (i == 1) {
+            return Result.ok();
+        } else {
+            return Result.error("删除失败");
+        }
+    }
 }

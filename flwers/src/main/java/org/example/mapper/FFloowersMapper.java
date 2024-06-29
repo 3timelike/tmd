@@ -17,6 +17,7 @@ import java.util.Map;
 * @createDate 2024-05-23 19:27:46
 * @Entity org.example.mapper.FFloowers
 */
+@Mapper
 public interface FFloowersMapper extends BaseMapper<FFloowers> {
     @Insert("INSERT INTO f_floowers (f_name,f_color,f_meaning,f_exist_time,f_product_area,f_aroma,f_petal_num,f_floower_hign,f_num,f_create_date,f_avatar) \n" +
             "VALUES(#{fVo.f_name},#{fVo.f_color},#{fVo.f_meaning},#{fVo.f_exist_time},#{fVo.f_product_area},#{fVo.f_aroma},#{fVo.f_petal_num},#{fVo.f_floower_hign},#{fVo.f_num},CURRENT_DATE,#{fVo.f_avatar}) ")

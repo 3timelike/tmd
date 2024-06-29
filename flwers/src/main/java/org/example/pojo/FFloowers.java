@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.*;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 @Data
 @AllArgsConstructor
@@ -36,7 +36,7 @@ public class FFloowers  implements Serializable{
     @TableField("f_floower_hign")
     private String f_floower_hign;
     @TableField("f_create_date")
-    private Data f_create_date;
+    private Date f_create_date;
     @TableField("f_num")
     private int f_num;
    @TableField("f_avatar")

@@ -11,7 +11,7 @@
       </el-header>
       <el-main style="padding: 0;">
         <!--        内容区域-->
-        <router-view :key="$route.fullPath"/>
+        <router-view />
       </el-main>
     </el-container>
   </el-container>

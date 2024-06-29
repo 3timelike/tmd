@@ -38,6 +38,7 @@
         <span>鲜花管理</span>
       </template>
       <el-menu-item  index="/floowers">鲜花信息</el-menu-item>
+      <el-menu-item  index="/floowersPile">花堆</el-menu-item>
     </el-sub-menu>
 
 
@@ -54,18 +55,18 @@
       <el-menu-item v-if="this.judgeIdentity()!==0" index="/repairInfo">销售统计</el-menu-item> -->
     </el-sub-menu>
 
-
-    
-
-
-   
-
-
     <el-menu-item index="/selfInfo">
       <el-icon>
         <setting/>
       </el-icon>
       <span>个人信息</span>
+    </el-menu-item>
+
+    <el-menu-item index="/leaveMessage">
+      <el-icon>
+        <setting/>
+      </el-icon>
+      <span>我要留言</span>
     </el-menu-item>
 
   </el-menu>

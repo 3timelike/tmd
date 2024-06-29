@@ -11,7 +11,7 @@
       </div>
       
       <!-- 列表 -->
-      
+      <div style="font-size: 20px;margin: 10px 0px">鲜花订单</div>
            <el-table :data="pageData" style="width: 100%">
       <el-table-column label="序号" prop="o_id"></el-table-column>
       <el-table-column label="鲜花名称" prop="f_name"></el-table-column>
@@ -21,11 +21,10 @@
       <el-table-column label="备注" prop="o_note"></el-table-column>
       <el-table-column label="下单时间" prop="o_time"></el-table-column>
         <el-table-column  >
-        
-      
+
+
       <template  v-slot="scope">
                 <el-button icon="plus" style="width: 50px" @click="observe(scope.row)">详请信息</el-button>
-        
       </template>
         </el-table-column>
         <el-table-column  label = "操作" >
@@ -36,8 +35,30 @@
       </template>
         </el-table-column>
       </el-table>
-        
-         
+      <div style="font-size: 20px;margin: 10px 0px">花堆订单</div>
+      <el-table :data="pageDataPile" style="width: 100%">
+        <el-table-column label="序号" prop="o_id"></el-table-column>
+        <el-table-column label="花堆名称" prop="f_name"></el-table-column>
+        <el-table-column label="预留电话" prop="o_phone_num"></el-table-column>
+        <el-table-column label="客户电话" prop="phone_num"></el-table-column>
+        <el-table-column label="地址" prop="o_area"></el-table-column>
+        <el-table-column label="备注" prop="o_note"></el-table-column>
+        <el-table-column label="下单时间" prop="o_time"></el-table-column>
+        <el-table-column  >
+
+
+          <template  v-slot="scope">
+            <el-button icon="plus" style="width: 50px" @click="observePile(scope.row)">详请信息</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column  label = "操作" >
+
+
+          <template v-slot="scope">
+            <el-button icon="plus" style="width: 50px" @click="removewillPile(scope.row)">删除订单</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
         
 
       <!-- 分页器 -->
@@ -53,8 +74,8 @@
           :total="totalSize"
         />
       </div>
+      <!--      订单详情信息弹窗  -->
               <div>
-                <!--      订单详情信息弹窗  -->
                 <el-dialog v-model="firstvisible" title="查看详情" width="30%" @close="cancel">
 
                     <el-form :model="temppageData" :rules="rules" label-width="120px">
@@ -73,14 +94,43 @@
 
                     </el-form>
                     <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="cancel">取 消</el-button>
+                 <span class="dialog-footer">
+                 <el-button @click="cancel">取 消</el-button>
               
-              <el-button type="primary" @click="save(temppageData)">确 定</el-button>
+                  <el-button type="primary" @click="save(temppageData)">确 定</el-button>
                
-            </span>
+                   </span>
                     </template>
-                </el-dialog>
+                 </el-dialog>
+            </div>
+
+            <div>
+                <el-dialog v-model="firstvisiblePile" title="查看详情" width="30%" @close="cancel">
+
+                    <el-form :model="temppageData" :rules="rules" label-width="120px">
+
+                        <el-form-item label="预留电话" >
+                             <el-input v-model="temppageData.o_phone_num"  style="width: 80%"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="预留地址" >
+                             <el-input v-model="temppageData.o_area"  style="width: 80%"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="订单备注" >
+                             <el-input v-model="temppageData.o_note"  style="width: 80%"></el-input>
+                        </el-form-item>
+
+                    </el-form>
+                    <template #footer>
+                 <span class="dialog-footer">
+                 <el-button @click="cancel">取 消</el-button>
+            
+                  <el-button type="primary" @click="savePile(temppageData)">确 定</el-button>
+               
+                   </span>
+                    </template>
+                 </el-dialog>
             </div>
             <div>
                 <!--      退订信息弹窗  -->
@@ -92,6 +142,19 @@
               
               <el-button @click="cancel1">取 消</el-button>
               <el-button type="primary" @click="removeOrder(temppageData)">确 定</el-button>
+               
+            </span>
+                    </template>
+                </el-dialog>
+
+                <el-dialog v-model="secondvisiblePile"  title="退订" width="30%" @close="cancel1">
+                    真的要退订吗
+                <template #footer>
+                   <el-form :model="temppageData" :rules="rules" label-width="120px"></el-form>
+            <span class="dialog-footer">
+              
+              <el-button @click="cancel1">取 消</el-button>
+              <el-button type="primary" @click="removeOrderPile(temppageData)">确 定</el-button>
                
             </span>
                     </template>
@@ -135,6 +198,18 @@ const pageData = ref([
                 o_time:""
   },
 ]);
+const pageDataPile = ref([
+  {             o_id:"",
+                f_id:"",
+                f_name:"",
+                uid:"",
+                o_phone_num:"",
+                phone_num:"",
+                o_area:"",
+                o_note:"",
+                o_time:""
+  },
+]);
 const temppageData = ref([
 
   {             
@@ -150,9 +225,15 @@ const temppageData = ref([
   },
 ]);
 const firstvisible = ref(false)
+const firstvisiblePile = ref(false)
 const secondvisible = ref(false)
+const secondvisiblePile = ref(false)
 const removewill = (info) =>{
   secondvisible.value = true
+  temppageData.value = info;
+}
+const removewillPile = (info) =>{
+  secondvisiblePile.value = true
   temppageData.value = info;
 }
 const removeOrder = (info) => {
@@ -163,7 +244,22 @@ const removeOrder = (info) => {
                                 type: "success",
                             });
                             getPageList()
-                            
+                        } else {
+                        ElMessage({
+                          message: res.msg,
+                          ype: "error",
+                      });
+                  }
+              });
+}
+const removeOrderPile = (info) => {
+  request.post("/removeOrderPile", info).then((res) => {
+                        if (res.code === 200) {
+                            ElMessage({
+                                message: "删除订单成功",
+                                type: "success",
+                            });
+                            getPageList()
                         } else {
                         ElMessage({
                           message: res.msg,
@@ -199,9 +295,12 @@ watch(
 // <el-button type="primary" @click="save">确 定</el-button>
 const cancel1 = () => {
   secondvisible.value = false
+  secondvisiblePile.value = false
 }
+
 const cancel = () => {
   firstvisible.value = false
+  firstvisiblePile.value = false
 }
 const save = (info)  =>{
       request.post("/updateOrder", info).then((res) => {
@@ -210,7 +309,7 @@ const save = (info)  =>{
                                 message: "修改订单成功",
                                 type: "success",
                             });
-                            getPageList()
+                              getPageList()
                             firstvisible.value = false;
                         } else {
                         ElMessage({
@@ -220,15 +319,37 @@ const save = (info)  =>{
                   }
               });
 }
-
+const savePile = (info)  =>{
+      request.post("/updateOrderPile", info).then((res) => {
+                        if (res.code === 200) {
+                            ElMessage({
+                                message: "修改订单成功",
+                                type: "success",
+                            });
+                              getPageList()
+                            firstvisiblePile.value = false;
+                        } else {
+                        ElMessage({
+                          message: res.msg,
+                          ype: "error",
+                      });
+                  }
+              });
+}
 // 分页带条件查询所有订单
 const getfindNewsPageInfo = (info) => {
-  
   return request.post("/findOrderPage", info);
 };
-//分页查询当前用户自己的订单
+const getfindNewsPageInfoPile = (info) => {
+  return request.post("/findOrderPagePile", info);
+};
+//分页查询当前用户自己的订单 鲜花订单
 const getFindOwnPageInfo = (info) => {
    return request.post("/findUserOrder",info);
+}
+//分页查询当前用户的花堆订单
+const getFindOwnPilePageInfo = (info) => {
+  return request.post("/findUserOrderPile",info);
 }
 //删除的回调
 // headline/removeByHid
@@ -244,24 +365,29 @@ const getFindOwnPageInfo = (info) => {
 // };
 // 初始化请求全部订单分页列表数据
 const getPageList = async () => {
+  secondvisible.value = false
+  secondvisiblePile.value = false
   let result = await getfindNewsPageInfo(findNewsPageInfo.value);
+  let orderPile = await getfindNewsPageInfoPile(findNewsPageInfo.value);
   console.log(result);
   
   pageData.value = result.data.pageInfo.pageData;
-  
-  findNewsPageInfo.value.pageNum = result.data.pageInfo.pageNum;
-  findNewsPageInfo.value.pageSize = result.data.pageInfo.pageSize;
-  totalSize.value = +result.data.pageInfo.totalSize;
+  pageDataPile.value = orderPile.data.pageInfo.pageData;
+
+  findNewsPageInfo.value.pageNum = result.data.pageInfo.pageNum + orderPile.data.pageInfo.pageNum;
+  findNewsPageInfo.value.pageSize = result.data.pageInfo.pageSize + orderPile.data.pageInfo.pageSize;
+  totalSize.value = +result.data.pageInfo.totalSize + orderPile.data.pageInfo.totalSize;
 };
 const getOwnPageList = async() => {
       let result = await getFindOwnPageInfo(findNewsPageInfo.value);
+      let orderPile = await getFindOwnPilePageInfo(findNewsPageInfo.value);
     console.log(result)
     
     pageData.value = result.data.pageInfo.pageData;
-    
-    findNewsPageInfo.value.pageNum = result.data.pageInfo.pageNum;
-    findNewsPageInfo.value.pageSize = result.data.pageInfo.pageSize;
-    totalSize.value = +result.data.pageInfo.totalSize;
+    pageDataPile.value = orderPile.data.pageInfo.pageData;
+    findNewsPageInfo.value.pageNum = result.data.pageInfo.pageNum + orderPile.data.pageInfo.pageNum;
+    findNewsPageInfo.value.pageSize = result.data.pageInfo.pageSize + orderPile.data.pageInfo.pageSize;
+    totalSize.value = +result.data.pageInfo.totalSize + orderPile.data.pageInfo.totalSize;
 }
 // 组件挂载的生命周期钩子
 onMounted(() => {
@@ -280,6 +406,12 @@ onMounted(() => {
   
 });
 const observe = (item) => {
+    firstvisible.value = true;
+    console.log(11)
+    temppageData.value = item;
+    console.log(temppageData.value)
+}
+const observePile = (item) => {
     firstvisible.value = true;
     console.log(11)
     temppageData.value = item;

@@ -18,12 +18,5 @@ public class ApplicationMain {
         SpringApplication.run(ApplicationMain.class,args);
     }
 
-    @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL)); //分页
-//        interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());  //乐观锁
-//        interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());  //防全局修改和删除
-        return interceptor;
-    }
+
 }

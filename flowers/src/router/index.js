@@ -1,4 +1,4 @@
-import { createRouter,createWebHashHistory } from "vue-router";
+import { createRouter,createWebHistory } from "vue-router";
 import Layout from '../layout/Layout.vue'
 
 
@@ -12,8 +12,10 @@ const routes = [
         //
         {path: '/home', name: 'Home', component: () => import("@/views/HomeViewsHome.vue")},
         {path: '/floowers', name: 'floowers', component: () => import("@/views/Floowers")},
+        {path: '/floowersPile', name: 'floowersPile', component: () => import("@/views/FloowersPile")},
         {path: '/orderFloower', name: 'orderFloower', component: () => import("@/views/OrderFloower")},
          {path: '/floowerInfo/:id', name: 'floowerInfo', component: () => import("@/views/FloowerInfo")},
+         {path: '/floowerPileInfo/:id', name: 'floowerPileInfo', component: () => import("@/views/FloowerPileInfo")},
         // {path: '/roomInfo', name: 'RoomInfo', component: () => import("@/views/RoomInfo")},
         // {path: '/noticeInfo', name: 'NoticeInfo', component: () => import("@/views/NoticeInfo")},
         // // {path: '/adjustRoomInfo', name: 'AdjustRoomInfo', component: () => import("@//AdjustRoomInfo")},
@@ -26,6 +28,7 @@ const routes = [
 
         {path: '/selfInfo', name: 'SelfInfo', component: () => import("@/views/SelfInfo")},
         {path: '/AllUserInfo', name: 'AllUserInfo', component: () => import("@/views/AllUserInfo")},
+        {path: '/leaveMessage', name: 'leaveMessage', component: () => import("@/views/LeaveMessage")},
     ]
 },
 ]
@@ -33,7 +36,7 @@ const routes = [
 
 const router = createRouter({
 
-      history:createWebHashHistory(),
+      history:createWebHistory(),
       routes
 })
 //路由守卫
