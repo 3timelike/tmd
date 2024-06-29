@@ -3,6 +3,8 @@ package org.example.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.example.pojo.Message;
 import org.example.pojo.vo.MessageVo;
+import org.example.pojo.vo.PortalVo;
+import org.example.utils.Result;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ import java.util.List;
 public interface  LeaveMessageService {
     public IPage<MessageVo> getPage(int currentPage, int pageSize);
 
-    List<MessageVo> getAll();
+    Result getAll(PortalVo portalVo);
 
     int insertMessage(Message message);
 

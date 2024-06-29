@@ -8,12 +8,16 @@ import org.example.mapper.UserMapper;
 import org.example.pojo.Message;
 import org.example.pojo.User;
 import org.example.pojo.vo.MessageVo;
+import org.example.pojo.vo.PortalVo;
 import org.example.service.LeaveMessageService;
+import org.example.utils.Result;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: LeaveMessageServiceImpl
@@ -47,19 +51,20 @@ public class LeaveMessageServiceImpl implements LeaveMessageService {
     }
 
     @Override
-    public List<MessageVo> getAll() {
-        List<Message> message = leaveMessageMapper.selectListSelf();
-        List<MessageVo> messages = new ArrayList<>();
-        for (Message msg : message){
-            MessageVo temp = new MessageVo();
-            BeanUtils.copyProperties(msg,temp);
+    public Result getAll(PortalVo portalVo) {
+        IPage<Map> page = new Page<>(portalVo.getPageNum(),portalVo.getPageSize());
+        leaveMessageMapper.selectListSelf(page,portalVo);
 
-            User user = userMapper.selectById(msg.getFrom());
-            temp.setUser(user);
+        Map data = new HashMap();
+        data.put("pageData",page.getRecords());
+        data.put("pageNum",page.getCurrent());
+        data.put("pageSize",page.getSize());
+        data.put("totalPage",page.getPages());
+        data.put("totalSize",page.getTotal());
 
-            messages.add(temp);
-        }
-        return messages;
+        Map pageInfo = new HashMap();
+        pageInfo.put("pageInfo",data);
+        return Result.ok(pageInfo);
     }
 
     @Override

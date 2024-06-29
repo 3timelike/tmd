@@ -20,7 +20,7 @@
         username,password,name,gender,age,phone_num,email,avatar,is_deleted
     </sql>
     <select id="selectAllUser" resultType="map">
-        select username,name,gender,age,phone_num,email from user where is_deleted = 0
+        select username,name,gender,age,phone_num,email,avatar from user where is_deleted = 0
         <if test="portalVo.keyWords !=null and portalVo.keyWords.length()>0 ">
             and name like concat('%',#{portalVo.keyWords},'%')
         </if>

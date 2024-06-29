@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import jakarta.annotation.Resource;
 import org.example.pojo.Message;
 import org.example.pojo.vo.MessageVo;
+import org.example.pojo.vo.PortalVo;
 import org.example.service.LeaveMessageService;
 import org.example.utils.Result;
 import org.springframework.web.bind.annotation.*;
@@ -27,14 +28,11 @@ public class LeaveMessageController {
     private LeaveMessageService leaveMessageService;
 
 
-    @GetMapping("{currentPage}/{pageSize}")
-    public Result getAllByPage(@PathVariable int currentPage, @PathVariable int pageSize){
-//        IPage<MessageVo> page = leaveMessageService.getPage(currentPage, pageSize);
-//        if (currentPage>page.getPages()){
-//            page=leaveMessageService.getPage((int) page.getPages(), pageSize);
-//        }
-        List<MessageVo> messages = leaveMessageService.getAll();
-        return Result.ok(messages);
+    @PostMapping("/getAllMessage")
+    public Result getAllByPage(@RequestBody PortalVo portalVo){
+
+        Result result = leaveMessageService.getAll(portalVo);
+        return result;
     }
 
     @PostMapping

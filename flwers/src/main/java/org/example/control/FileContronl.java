@@ -104,6 +104,9 @@ public class FileContronl {
     }
     @GetMapping("/initAvatar/{filename}")
     public Result<?> initAvatar(@PathVariable String filename) throws IOException {
+        if(filename.trim() == ""){
+            return Result.error("文件名不存在");
+        }
         System.out.println(filename);
         String path = rootFilePath + filename;
         System.out.println(path);

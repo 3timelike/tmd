@@ -92,7 +92,10 @@ export default {
       this.$router.push("/selfInfo")
     },
     signup(){
-      if(!this.status){
+      if(this.identify === 'manager'){
+        alert("管理员无需签到");
+      }
+      else if(!this.status){
     console.log(this.form)
         request.post("/" + this.identify +"/signup",this.form).then(res => {
                 if (res.code === 200) {

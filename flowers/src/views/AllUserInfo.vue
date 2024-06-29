@@ -11,6 +11,11 @@
       </div>
       <div>
      <el-table :data="pageData" style="width: 100%">
+      <el-table-column label="头像" prop="image" > 
+                 <template v-slot="scope">
+                <img v-if ="scope.row.image" :src="'data:image;base64,' + scope.row.image" style="width: 60px">
+                 </template>
+      </el-table-column>
       <el-table-column label="用户名" prop="username"></el-table-column>
       <el-table-column label="姓名" prop="name"></el-table-column>
       <el-table-column label="性别" prop="gender"></el-table-column>
@@ -63,6 +68,8 @@ const pageData = ref([
     age: "",
     phone_num: "",
     email: "",
+    avatar:"",
+    image:""
   },
 ]);
 
@@ -107,14 +114,21 @@ const getfindNewsPageInfo = (info) => {
 // 初始化请求分页列表数据
 const getPageList = async () => {
   let result = await getfindNewsPageInfo(findNewsPageInfo.value);
-  console.log(result);
-  //pageData.splice(0, pageData.length, ...result.pageInfo.pageData);
-  pageData.value = result.data.pageInfo.pageData;
-  // alert(this.pageData.value)z
-  //console.log(pageData.value)
   findNewsPageInfo.value.pageNum = result.data.pageInfo.pageNum;
   findNewsPageInfo.value.pageSize = result.data.pageInfo.pageSize;
   totalSize.value = +result.data.pageInfo.totalSize;
+  pageData.value = result.data.pageInfo.pageData;
+  for(let i = 0 ; i < pageData.value.length ; i++){
+    
+    if(pageData.value[i].avatar == "" || pageData.value[i].avatar == null) continue;
+console.log(pageData.value[i].avatar)
+    request.get("/files/initAvatar/" + pageData.value[i].avatar).then((res) => {
+                       if (res.code === 200) {
+                        pageData.value[i].image =  res.data.data
+                       } else { 
+                         this.messages[i].image =  "";
+                    }});
+  }
 };
 // 组件挂载的生命周期钩子
 onMounted(() => {
